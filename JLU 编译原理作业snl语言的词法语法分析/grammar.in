@@ -1,0 +1,161 @@
+总程序：
+1)  ALL			::=	PROGRAMHEAD  DECLAREPART  PROGRAMBODY	 .	
+
+程序头：
+2)   PROGRAMHEAD		::=	PROGRAM	PROGRAMNAME       					
+3)   PROGRAMNAME		::=  ID                                        
+
+程序声明：
+4)  DECLAREPART		::=	TYPEDECPART  VARDECPART  PROCDECPART
+
+类型声明：
+5)  TYPEDECPART		::=			  	    	 
+6) 						 |  TYPEDEC						    
+7) TYPEDEC  		::= 	TYPE	TYPEDECLIST					
+8) TYPEDECLIST		::=	TYPEID = TYPEDEF ; TYPEDECMORE		
+9) TYPEDECMORE		::= 		  		    
+10)                 		 |  TYPEDECLIST		    				    
+11) TYPEID			::= 	ID									
+
+类型：
+12) TYPEDEF			::= 	BASETYPE 			
+13)                 		 |  STRUCTURETYPE 			
+14)                		 |  ID				        			 
+
+15) BASETYPE			::=	INTEGER					  
+16)                 		 |   CHAR					       
+
+17) STRUCTURETYPE		::= 	ARRAYTYPE						
+18)                		 |   RECTYPE							
+
+19) ARRAYTYPE		::=	ARRAY  [ LOW .. TOP  ]  OF BASETYPE		
+20) LOW             ::=  INTC                           
+21) TOP          	::=  INTC      		                
+
+22) RECTYPE			::=	RECORD  FIELDDECLIST	 END	
+23) FIELDDECLIST		::=	BASETYPE  IDLIST ; FIELDDECMORE						                                                                                                                                     
+24)                  	 |  ARRAYTYPE IDLIST ; FIELDDECMORE	   
+
+25) FIELDDECMORE		::= 									
+26)               		 |  FIELDDECLIST	  	
+27) IDLIST			::= 	ID  IDMORE					
+28) IDMORE			::=									
+29)                		 |  , IDLIST							
+
+变量声明：
+30) VARDECPART		::=				  		   
+31)            			 |  VARDEC							
+32) VARDEC   		::=	VAR  VARDECLIST							
+33) VARDECLIST		::=	TYPEDEF	VARIDLIST ;  VARDECMORE
+
+34) VARDECMORE		::= 						
+35)              		 |  VARDECLIST   
+36) VARIDLIST			::=	ID  VARIDMORE						
+37) VARIDMORE		::=										
+38)                      |  , VARIDLIST							
+
+过程声明：
+39) PROCDECPART		::=				  		   		   
+40)                		 |  PROCDEC		  	 
+41) PROCDEC      	::=	PROCEDURE	PROCNAME  (  PARAMLIST )   ; PROCDECPARTII PROCBODY PROCDECMORE 
+42)  PROCDECMORE		::=  							
+43) 						 |  PROCDEC		 
+44)  PROCNAME			::=	ID		
+						
+参数声明：
+45)  PARAMLIST		    ::=							 
+46)             			 |  PARAMDECLIST 	
+47) PARAMDECLIST		::=	 PARAM  PARAMMORE	
+
+48) PARAMMORE	    ::=									
+49)                      |  ; PARAMDECLIST			
+50) PARAM			::=	TYPEDEF  FORMLIST		                       
+51)                      |  VAR TYPEDEF  FORMLIST			
+52) FORMLIST			::= 	ID  FIDMORE						
+53) FIDMORE			::=									
+54)                      |  , FORMLIST						
+
+过程中的声明部分：
+55) PROCDECPARTII		::=	DECLAREPART  
+
+过程体：
+56) PROCBODY			::=	PROGRAMBODY					
+
+主程序体：
+57) PROGRAMBODY		::=	BEGIN  STMLIST	 END		
+
+语句序列：
+58) STMLIST			::=	STM		STMMORE		
+59) STMMORE			::=				
+60)  					 |  ;  STMLIST						
+
+语句：
+61) STM				::=	 CONDITIONALSTM				
+62)                     	 |  LOOPSTM				
+63)                     	 |  INPUTSTM				
+64) 		               	 |  OUTPUTSTM				
+65)                     	 |  RETURNSTM				
+66)                     	 |  ID ASSCALL	  				
+
+注：因为赋值语句和函数调用语句的开始部分都是标识符，所以将赋值语句和调用语句写在一起。
+67) ASSCALL			::=  ASSIGNMENTREST				
+68)      				 |  CALLSTMREST					
+
+赋值语句：
+69) ASSIGNMENTREST	::=	VARIMORE	:= EXP	  	
+
+条件语句：
+70) CONDITIONALSTM	::=	IF RELEXP THEN STMLIST ELSE STMLIST  FI														  
+循环语句：
+71) LOOPSTM			::=	WHILE  RELEXP	DO STMLIST	ENDWH															
+输入语句：
+72) INPUTSTM			::=	READ  (  INVAR )  	   		 
+73) INVAR 			::=   ID						  
+
+输出语句：
+74) OUTPUTSTM		::=	WRITE (  EXP ) 			 
+
+返回语句：
+75) RETURNSTM		::=	RETURN   	 
+
+过程调用语句：
+76) CALLSTMREST		::=	 (  ACTPARAMLIST ) 					
+77) ACTPARAMLIST		::=									 
+78)         				 |  EXP  ACTPARAMMORE		
+79) ACTPARAMMORE  	::=									
+80)            			 |  ,  ACTPARAMLIST						
+
+条件表达式：
+81) RELEXP			::=  EXP  OTHERRELE           
+82) OTHERRELE		    ::=  CMPOP   EXP 		  		   
+
+算术表达式：
+83) EXP			    ::=  TERM   OTHERTERM	  	 
+84) OTHERTERM		::=   		            
+85)         				 |  ADDOP   EXP		    	
+
+项：
+86) TERM			    ::=   FACTOR   OTHERFACTOR	    
+87) OTHERFACTOR		::=   
+88)                     	 |   MULTOP  TERM				
+  
+因子：
+89) FACTOR			::=     (   EXP  )   					
+90)                    	 |   INTC					
+91)                    	 |   VARIABLE			 		
+92) VARIABLE			::=	 ID   VARIMORE				
+93) VARIMORE			::=   	
+94)            			 |    [  EXP  ] 					
+95)                 		 |   . FIELDVAR					
+96) FIELDVAR			::=  ID   FIELDVARMORE			
+97) FIELDVARMORE   	::=   			   
+98)       				 |    [  EXP  ] 					
+
+99)  CMPOP			::=  <					
+100)           			 |   =	
+
+101) ADDOP			::=  +	
+102)           			 |   -
+
+103)  MULTOP			::=  *
+104)             |   /
